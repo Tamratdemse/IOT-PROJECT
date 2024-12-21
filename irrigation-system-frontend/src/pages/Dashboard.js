@@ -3,35 +3,31 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
-import WeatherForecast from "../components/WeatherForecast";
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5000/api"; // Replace with your backend base URL
+const BASE_URL = "http://localhost:5000/api";
 const imgURL = "http://localhost:5000";
 
 const Dashboard = () => {
-  const [crops, setCrops] = useState([]); // Initialize state to store crops data
+  const [crops, setCrops] = useState([]);
 
   // Fetch crops data from the backend when the component mounts
   useEffect(() => {
     const fetchCrops = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/fields`); // Fetch crops from backend
-        setCrops(response.data); // Update state with the fetched crops data
+        const response = await axios.get(`${BASE_URL}/fields`);
+        setCrops(response.data);
       } catch (error) {
         console.error("Error fetching crops data:", error);
       }
     };
 
     fetchCrops();
-  }, []); // Empty dependency array ensures this runs once on mount
+  }, []);
 
   return (
     <div className="flex h-screen bg-gray-100">
       <main className="flex-1 bg-gray-50 overflow-y-auto">
-        <div className="p-6">
-          <WeatherForecast />
-        </div>
         <motion.div
           className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           initial={{ opacity: 0 }}

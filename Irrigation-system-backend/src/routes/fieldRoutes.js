@@ -86,25 +86,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// PUT /api/fields/:id - Update a field
-router.put("/:id", async (req, res) => {
-  try {
-    const updatedField = await Field.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      {
-        new: true,
-      }
-    );
-    if (!updatedField)
-      return res.status(404).json({ error: "Field not found" });
-    res.status(200).json(updatedField);
-  } catch (err) {
-    console.error("Error updating field:", err.message);
-    res.status(500).json({ error: "Failed to update field" });
-  }
-});
-
 // DELETE /api/fields/:id - Delete a field
 router.delete("/:id", async (req, res) => {
   try {

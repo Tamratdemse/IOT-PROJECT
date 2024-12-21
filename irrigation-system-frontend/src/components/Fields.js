@@ -4,7 +4,7 @@ import axios from "axios";
 import FieldsView from "./FieldsView";
 
 const imgURL = "http://localhost:5000";
-const BASE_URL = "http://localhost:5000/api"; // Replace with your backend base URL
+const BASE_URL = "http://localhost:5000/api";
 
 const Fields = () => {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ const Fields = () => {
     area: "",
     location: "",
     status: "Active",
-    photo: null, // File input for photo
+    photo: null,
   });
   const [showAddForm, setShowAddForm] = useState(false);
 
@@ -24,14 +24,14 @@ const Fields = () => {
     const fetchFields = async () => {
       try {
         const response = await axios.get(`${BASE_URL}/fields`);
-        setFields(response.data); // Assume the API returns an array of fields
+        setFields(response.data);
       } catch (error) {
         console.error("Error fetching fields:", error);
       }
     };
 
     fetchFields();
-  }, []); // Empty dependency array ensures this runs once on mount
+  }, []);
 
   const handleView = (field) => {
     navigate("/view", { state: { field } });
@@ -41,6 +41,9 @@ const Fields = () => {
     try {
       await axios.delete(`${BASE_URL}/fields/${fieldId}`);
       setFields(fields.filter((field) => field.id !== fieldId));
+      // auto refration the components after deleting
+      const response = await axios.get(`${BASE_URL}/fields`);
+      setFields(response.data);
     } catch (error) {
       console.error("Error deleting field:", error);
     }
@@ -220,7 +223,7 @@ const Fields = () => {
               View
             </button>
             <button
-              onClick={() => handleDelete(field.id)}
+              onClick={() => handleDelete(field._id)}
               className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 mt-2 ml-2"
             >
               Delete

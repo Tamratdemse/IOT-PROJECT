@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import WeatherForecast from "./WeatherForecast";
 
+const BASE_URL = "http://localhost:5000/api";
 const CropDetails = () => {
   const { id } = useParams();
   const [cropDetails, setCropDetails] = useState(null);
@@ -10,14 +12,11 @@ const CropDetails = () => {
   useEffect(() => {
     const fetchCropDetails = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:5000/api/crop/${id}`
-        );
+        const response = await axios.get(`${BASE_URL}/crop/${id}`);
         console.log("Response data:", response.data);
         setCropDetails(response.data);
       } catch (error) {
         console.error(error);
-        alert(id);
         setError("Failed to fetch crop details");
       }
     };
@@ -38,6 +37,9 @@ const CropDetails = () => {
       <h2 className="text-4xl font-bold text-gray-800 mb-6 text-center">
         {cropDetails.name} Details
       </h2>
+      <div className="p-6">
+        <WeatherForecast location={cropDetails.fields[0].location} />
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
         <div className="bg-white shadow-lg rounded-lg p-6 space-y-4">
           <p>
